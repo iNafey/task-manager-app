@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+	<link rel="stylesheet" href="../css/main.css" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dosis&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Dosis&family=Exo+2:wght@700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <div class="sidebar" id="sidebar">
+    <a href="home.html" title="Go to home"><i class="fa fa-home"></i> Home</a>
+    <a class="active" href="#tasks" title="You are here!"><i class="fa fa-tasks"></i> Tasks</a>
+    <a href="" title="Feature needs to be implemented!"><i class="fa fa-calendar"></i> Events</a>
+    <a href="" title="Feature needs to be implemented!"><i class="fa fa-shopping-basket"></i> Quick Buy</a>
+
+    <div class="row">
+      <button class="pushable col-sm-10" onclick="document.location='help.html'">
+        <span class="shadow"></span>
+        <span class="edge"></span>
+        <span class="front">
+          Help <i class="fa fa-info-circle"></i>
+        </span>
+      </button>
+    </div>
+
+    <div class="row">
+      <button class="pushable col-sm-10 col-lg-10" title="Feature not implemented!">
+        <span class="shadow"></span>
+        <span class="edge"></span>
+        <span class="front">
+          Privacy Policy <i class="fa fa-user-secret"></i>
+        </span>
+      </button>
+    </div>
+
+    <div class="row">
+
+      <div class="color-theme col-sm-4 offset-sm-4">
+        <input type="checkbox" class="checkbox" id="checkbox">
+        <label for="checkbox" class="label">
+          <i class="fa fa-moon-o"></i>
+          <i class='fa fa-sun-o'></i>
+          <div class='ball'>
+        </label>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="logout-btn col-sm-12">
+      <a href="#" id="logoutbtn" class="btn btn-info btn-md" onclick="logout()">
+        Log out <span class="bi bi-box-arrow-right"></span>
+      </a>
+    </div>
+  </div>
+
+  </div>
+
+  <div class="content tasks-content">
+    <div class="container-fluid pb-4">
+      <div class="row">
+        <div class="weather pl-5 mt-4 col-sm-1 col-lg-2 col-xl-2" title="Feature needs to be implemented!"><i class="fa fa-cloud fa-4x"></i></div>
+        <div class="vl mt-4"></div>
+        <div class="clock col-sm-2 col-lg-2">
+          <span class="clock-time"></span>
+          <span class="clock-ampm"></span>
+          <div class="current-date" id="current-date"></div>
+        </div>
+        <div class="greeting col-sm-2 offset-sm-6 col-lg-2 offset-lg-4 offset-xl-5 mt-sm-5 mt-lg-2 mt-xl-4" id="greeting">Welcome Back User!</div>
+      </div>
+    </div>
+    <div class="row">
+
+			<!-- TASK ACTIONS: add, edit, clear all -->
+      <div class="col-sm-3 offset-sm-1 col-lg-3 offset-lg-2 mt-5 pl-5">
+        <h3>Create a task</h3>
+      </div>
+
+      <div class="box col-sm-3 offset-sm-4 col-lg-3 offset-lg-3 mt-5">
+        <a href="#create-task" class="link-1" id="createTaskPopUpBtn">Create</a>
+
+				<!-- CREATE TASK MODAL -->
+        <div class="modal-container" id="create-task" style="--m-background: hsla(0, 0%, 0%, .4);">
+          <div id="createTaskModal" class="modal form-group animate__animated animate__fadeInDown">
+            <a href="" class="link-2"></a>
+
+            <h1 class="modal__title">Create a task:</h1>
+						<p class="text-warning"><strong><i>Field marked with * are required!</i></strong></p>
+
+            <div class="Input">
+              <input type="text" id="taskTitle" class="Input-text col-sm-12 mt-5 p-2" placeholder="Title of the task*">
+              <label for="input" class="Input-label pt-5">Task title</label>
+							<div class="validation_error text-danger mt-3" id="required-name" style="display:none;">Name of the task is required!</div>
+            </div>
+
+            <div class="Input">
+
+              <textarea class="Input-text col-sm-12 mt-5 p-1" id="taskDesc" rows="3" placeholder="Enter the task description here"></textarea>
+              <label for="input" class="Input-label">Task Description</label>
+            </div>
+
+            <div class="Input">
+              <input type="text" id="taskLocation" class="Input-text col-sm-12 mt-5 p-2" placeholder="Location of the task, e.g. My home">
+              <label for="input" class="Input-label pt-5">Task Location</label>
+            </div>
+
+            <div class='col-sm-4 mt-5'>
+              <h4>Due Date*</h4>
+            </div>
+            <input type='date' class="taskDateBar Input-text col-sm-12 mt-2 p-2" id='taskDate' />
+						<div class="validation_error text-danger mt-3" id="missing-date" style="display:none;">A valid due date is required! In the format (dd/mm/yyyy)</div>
+						<div class="validation_error text-danger mt-3" id="invalid-date" style="display:none;">Incorrect date format! Date should be of the format: (dd/mm/yyyy)</div>
+
+            <div class='col-sm-4 mt-5'>
+              <h4>Due time</h4>
+            </div>
+            <input type='time' class="taskTimeBar Input-text col-sm-12 mt-2 p-2" id='taskTime' />
+
+            <div class='col-sm-4 mt-5'>
+              <h4>Characteristics of the task</h4>
+            </div>
+
+            <label for="priorityLvlLabel" class="mt-5">Choose a priority level of the task*</label>
+            <select class="form-control" id="priority">
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+
+            <label for="difficultyLvlLabel" class="mt-5">Choose a difficulty level/weight of the task</label>
+            <select class="form-control" id="difficulty">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+							<option value="n/a">n/a</option>
+            </select>
+
+              <button id="createTaskBtn" class="createTaskBtn offset-sm-5 text-white">Create Task &rarr;</button>
+
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+		<div class="row">
+			<div class="col-sm-3 offset-sm-1 col-lg-3 offset-lg-2 mt-5 pl-5">
+				<h3>Edit a task</h3>
+			</div>
+
+			<div class="box col-sm-3 offset-sm-4 col-lg-3 offset-lg-3 mt-5">
+				<a href="#choose-edit-task" class="editTaskPopUpBtn" id="editATaskBtn"> Edit </a>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-sm-3 offset-sm-1 col-lg-3 offset-lg-2 mt-5 pl-5">
+				<h3>Delete all tasks</h3>
+			</div>
+
+			<div class="box col-sm-3 offset-sm-4 col-lg-3 offset-lg-3 mt-5">
+				<a href="" class="clearTasksBtn" id="clearTasksBtn"> Clear </a>
+			</div>
+		</div>
+
+
+
+    <div class="row">
+      <div class="col-sm-4 pl-5 mt-5">
+        <h2><strong>Deadlines<strong></h2>
+        <p><i>Click on a task below to view or complete it</i></p>
+      </div>
+    </div>
+
+		<!-- Deadlines -->
+    <div class="row" id="deadlines">
+      <div class="col-sm-4  mt-5 pl-5" id="high-prio-tasks">
+
+        <h3>High priority</h3>
+        <ul class="list-group mt-3 my-list-group" id="high-items">
+        </ul>
+      </div>
+      <div class="col-sm-4  mt-5" id="med-prio-tasks">
+        <h3>Medium priority</h3>
+
+        <ul class="list-group mt-3 my-list-group" id="med-items">
+        </ul>
+      </div>
+      <div class="col-sm-4 mt-5 pr-5" id="low-prio-tasks">
+        <h3>Low priority</h3>
+
+        <ul class="list-group mt-3 my-list-group" id="low-items">
+        </ul>
+      </div>
+    </div>
+
+	<!-- Tasks Progress and Completed Tasks -->
+	<div class="row pb-5" id="progress-row">
+		<div class="col-sm-6  mt-5 pl-5" id="tasks-progress">
+
+			<h3><strong>Tasks Progress</strong></h3>
+			<ul class="list-group my-list-group mt-3 " id="ongoing-tasks">
+			</ul>
+		</div>
+
+		<div class="col-sm-6  mt-5 pr-5" id="tasks-completed">
+
+			<h3><strong>Completed Tasks</strong></h3>
+			<ul class="list-group my-list-group mt-3" id="completed-tasks">
+			</ul>
+		</div>
+
+	</div>
+
+  </div>
+
+
+
+
+
+
+<!-- VIEW A TASK -->
+  <div class="modal-container" id="view-task" style="--m-background: hsla(0, 0%, 0%, .4);">
+    <div id="viewTaskModal" class="modal form-group animate__animated animate__fadeInDown">
+      <a href="" class="link-2"></a>
+
+      <h1 class="modal__title mb-5 col-sm-4 offset-sm-2">Task information:</h1>
+
+      <div class="row mt-5">
+        <h3 class="view-task-label col-sm-4 offset-sm-2">Title:</h3>
+        <h4 class="view-task-info col-sm-4 " id="viewTitle"></h4>
+      </div>
+
+      <div class="row">
+        <h3 class="view-task-label col-sm-4 offset-sm-2">Description:</h3>
+        <h4 class="view-task-info col-sm-4" id="viewDesc"></h4>
+      </div>
+
+      <div class="row">
+        <h3 class="view-task-label col-sm-4 offset-sm-2">Location:</h3>
+        <h4 class="view-task-info col-sm-4" id="viewLocation"></h4>
+      </div>
+
+      <div class="row">
+        <h3 class="view-task-label col-sm-4 offset-sm-2">Due Date (yyyy/mm/dd): </h3>
+        <h4 class="view-task-info col-sm-4" id="viewDate"></h4>
+      </div>
+
+      <div class="row">
+        <h3 class="view-task-label col-sm-4 offset-sm-2">Due Time:</h3>
+        <h4 class="view-task-info col-sm-4" id="viewTime"></h4>
+      </div>
+      <div class="row">
+        <h3 class="view-task-label col-sm-4 offset-sm-2">Priority Level:</h3>
+        <h4 class="view-task-info col-sm-4" id="viewPriority"></h4>
+      </div>
+
+      <div class="row">
+        <h3 class="view-task-label col-sm-4 offset-sm-2">Weight:</h3>
+        <h4 class="view-task-info col-sm-4" id="viewDifficulty"></h4>
+      </div>
+
+			<div class="row">
+        <h3 class="view-task-label col-sm-4 offset-sm-2">Progress:</h3>
+        <h4 class="view-task-info col-sm-4" id="viewProgress"></h4>
+      </div>
+
+			<a href="" class="text-white col-sm-4 offset-sm-4">
+				<button id="completeTaskBtn" class="createTaskBtn">Mark as complete <i class="fa fa-check" type="button"></i></button>
+			</a>
+
+    </div>
+  </div>
+
+<!-- CHOOSE A TASK TO EDIT -->
+	<div class="modal-container" id="choose-edit-task" style="--m-background: hsla(0, 0%, 0%, .4);">
+    <div id="chooseTaskModal" class="modal form-group animate__animated animate__fadeInDown">
+      <a href="" class="link-2"></a>
+
+      <h1 class="modal__title mb-5 col-sm-4 offset-sm-2">Edit task</h1>
+
+      <div class="row mt-5">
+        <h3 class="view-task-label col-sm-4 offset-sm-2">Choose a task to edit:</h3>
+      </div>
+
+			<div class="row mt-5">
+				<div class="col-sm-12  mt-5" id="choose-task">
+
+					<h3>Choose a task to edit:</h3>
+					<ul class="list-group" id="ongoing-tasks">
+					</ul>
+				</div>
+			</div>
+
+
+    </div>
+  </div>
+
+<!-- EDIT A TASK -->
+	<div class="modal-container" id="edit-task" style="--m-background: hsla(0, 0%, 0%, .4);">
+		<div id="editTaskModal" class="modal form-group animate__animated animate__fadeInDown">
+			<a href="" class="link-2"></a>
+
+			<h1 class="modal__title">Edit task:</h1>
+
+			<div class="Input">
+				<input type="text" id="editTaskTitle" class="Input-text col-sm-12 mt-5 p-2" placeholder="Title of the task*">
+				<label for="input" class="Input-label pt-5">Task title</label>
+				<div class="validation_error text-danger mt-1" id="edit-missing-name" style="display:none;">Task name is required! It cannot be empty!</div>
+			</div>
+
+			<div class="Input">
+				<textarea class="Input-text col-sm-12 mt-5 p-2" id="editTaskDesc" rows="3" placeholder="Enter the task description here"></textarea>
+				<label for="input" class="Input-label pt-5">Task Description</label>
+			</div>
+
+			<div class="Input">
+				<input type="text" id="editTaskLocation" class="Input-text col-sm-12 mt-5 p-2" placeholder="Location of the task, e.g. My home">
+				<label for="input" class="Input-label pt-5">Task Location</label>
+			</div>
+
+			<div class='col-sm-4 mt-5'>
+				<h4>Due date*</h4>
+			</div>
+			<input type='date' class="taskDateBar Input-text col-sm-12 mt-2 p-2" id='editTaskDate' />
+			<div class="validation_error text-danger mt-3" id="edit-invalid-date" style="display:none;">A valid due date is required! In the format (dd/mm/yyyy)</div>
+
+			<div class='col-sm-4 mt-5'>
+				<h4>Due time</h4>
+			</div>
+			<input type='time' class="taskTimeBar Input-text col-sm-12 mt-2 p-2" id='editTaskTime' />
+
+
+			<div class='col-sm-4 mt-5'>
+				<h4>Characteristics of the task</h4>
+			</div>
+
+			<label for="priorityLvlLabel" class="mt-5">Choose a priority level of the task</label>
+			<select class="form-control" id="editTaskPriority">
+				<option value="High">High</option>
+				<option value="Medium">Medium</option>
+				<option value="Low">Low</option>
+			</select>
+
+			<label for="difficultyLvlLabel" class="mt-5">Choose a difficulty level/weight of the task</label>
+			<select class="form-control" id="editTaskDifficulty">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="6">6</option>
+				<option value="7">7</option>
+				<option value="8">8</option>
+				<option value="9">9</option>
+				<option value="10">10</option>
+			</select>
+
+			<div class="Input">
+				<input type="text" id="editTaskProgress" class="Input-text col-sm-12 mt-5 p-2" placeholder="Task Progress (in %), e.g. 100 means current task is completed">
+				<label for="input" class="Input-label pt-5">Task Progress (in %)</label>
+			</div>
+
+				<button id="saveEditBtn" class="createTaskBtn text-white offset-sm-4">Save Changes <i class="bi bi-save-fill"></i></button>
+
+		</div>
+
+	</div>
+
+
+  <script>
+    const checkbox = document.getElementById('checkbox');
+
+
+    checkbox.addEventListener('change', () => {
+      darkTheme();
+    })
+
+		function darkTheme() {
+      var sidebar = document.getElementById('sidebar');
+      var lists = document.getElementsByClassName('my-list-items');
+      var highItems = document.getElementById('high-items');
+      var medItems = document.getElementById('med-items');
+      var lowItems = document.getElementById('low-items');
+			var onGoingTasks = document.getElementById('ongoing-tasks');
+			var completedTasks = document.getElementById('completed-tasks');
+
+			document.body.classList.toggle('dark');
+      sidebar.classList.toggle('dark');
+
+      for (let i = 0, len = lists.length; i < len; i++) {
+        lists[i].classList.toggle('dark');
+      }
+      highItems.classList.toggle('dark');
+      medItems.classList.toggle('dark');
+      lowItems.classList.toggle('dark');
+			onGoingTasks.classList.toggle('dark');
+			completedTasks.classList.toggle('dark');
+    }
+
+    function logout() {
+      let text = "You won't be able to access any features!\nAre you sure you want to log out?";
+      if (confirm(text) == true) {
+        text = "You pressed OK!";
+				window.location.href = "../index.html";
+				storeToLocal('loggedUser', '');
+      } else {
+        text = "You canceled!";
+      }
+      document.getElementById("demo").innerHTML = text;
+    }
+
+    class DigitalClock {
+      constructor(element) {
+        this.element = element;
+      }
+
+      start() {
+        this.update();
+
+        setInterval(() => {
+          this.update();
+        }, 500);
+      }
+
+      update() {
+        const parts = this.getTimeParts();
+        const minuteFormatted = parts.minute.toString().padStart(2, "0");
+        const timeFormatted = `${parts.hour}:${minuteFormatted}`;
+        const amPm = parts.isAm ? "AM" : "PM";
+
+        this.element.querySelector(".clock-time").textContent = timeFormatted;
+        this.element.querySelector(".clock-ampm").textContent = amPm;
+      }
+
+      getTimeParts() {
+        const now = new Date();
+
+        return {
+          hour: now.getHours() % 12 || 12,
+          minute: now.getMinutes(),
+          isAm: now.getHours() < 12
+        };
+      }
+    }
+
+    const clockElement = document.querySelector(".clock");
+    const clockObject = new DigitalClock(clockElement);
+
+
+
+    clockObject.start();
+
+    var today = new Date();
+    var date = today.getDate() + '/' + (today.getMonth() + 1) + '/' + today.getFullYear();
+    const dateToday = document.getElementById("current-date").innerHTML = date;
+
+
+
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.3/moment.min.js"></script>
+  <script type="text/javascript" src="../js/tasks.js"></script>
+
+
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
